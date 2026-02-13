@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Be My Valentine 💘</title>
+
+<style>
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Segoe UI", sans-serif;
+  height: 100vh;
+  overflow: hidden;
+  background-image: url("/siddhi.jpeg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Glass card */
+
+.container {
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(10px);
+  padding: 25px;
+  border-radius: 20px;
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+  z-index: 2;
+}
+
+h1 {
+  color: rgb(223, 26, 26);
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+/* Buttons */
+
+button {
+  padding: 14px 22px;
+  font-size: 18px;
+  margin: 10px;
+  border: none;
+  border-radius: 14px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+#yesBtn {
+  background: #ff4d88;
+  color: white;
+  box-shadow: 0 0 10px rgba(255,77,136,0.7);
+}
+
+#yesBtn:hover {
+  transform: scale(1.1);
+}
+
+#noBtn {
+  background: #666;
+  color: white;
+  position: absolute;
+}
+
+/* Celebration */
+
+#celebration {
+  display: none;
+  color: rgb(250, 3, 3);
+  margin-top: 15px;
+  animation: pop 1s infinite alternate;
+}
+
+@keyframes pop {
+  from {transform: scale(1);}
+  to {transform: scale(1.08);}
+}
+
+img {
+  width: 240px;
+  max-width: 80%;
+}
+
+/* Heart rain */
+
+.heart {
+  position: absolute;
+  font-size: 20px;
+  animation: fall 4s linear forwards;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(100vh);
+    opacity: 0;
+  }
+}
+
+/* Confetti */
+
+.confetti {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  animation: confettiFall 3s linear forwards;
+}
+
+@keyframes confettiFall {
+  to {
+    transform: translateY(100vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* Translucent floating hearts background */
+
+.bg-heart {
+  position: absolute;
+  font-size: 60px;
+  opacity: 0.12;
+  animation: float 10s linear infinite;
+}
+
+@keyframes float {
+  from { transform: translateY(110vh); }
+  to { transform: translateY(-20vh); }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- Floating translucent hearts -->
+<script>
+for(let i=0;i<12;i++){
+  const h=document.createElement("div");
+  h.className="bg-heart";
+  h.innerHTML="💖";
+  h.style.left=Math.random()*100+"vw";
+  h.style.animationDuration=(8+Math.random()*6)+"s";
+  h.style.fontSize=(40+Math.random()*40)+"px";
+  document.body.appendChild(h);
+}
+</script>
+
+<div class="container">
+
+<h1 id="title">Will you be my Valentine? 💞</h1>
+
+<button id="yesBtn">YES 💘</button>
+<button id="noBtn">NO 😝</button>
+
+<div id="celebration">
+  <p>You said YES!!! 💖</p>
+  <img src="https://www.bing.com/th/id/OGC.51bf5f6b3d2389c786b0a5ea6f90bcd3?o=7&pid=1.7&rm=3&rurl=https%3a%2f%2fi.pinimg.com%2foriginals%2f0c%2fda%2f2f%2f0cda2f2d00fcdfb94e6efd7aeec005e0.gif&ehk=EKXE4Sev1amM5Hqf8kFx4mPIfJ8plB1yKzLIjT3OA8w%3d">
+  <p>I Love You Shona💋</p>
+  <p>Forever & Always 💕</p>
+</div>
+
+</div>
+
+<audio id="music">
+  <source src="https://open.spotify.com/track/3gixnmepHSsyAuho34rprN?si=ULZOR7ZrR2mBnOT45btWkA">
+</audio>
+
+<script>
+
+const yesBtn=document.getElementById("yesBtn");
+const noBtn=document.getElementById("noBtn");
+const celebration=document.getElementById("celebration");
+const title=document.getElementById("title");
+const music=document.getElementById("music");
+
+let noClicks=0;
+
+function placeNo(){
+  noBtn.style.left="65%";
+  noBtn.style.top="60%";
+}
+placeNo();
+
+function moveNo(){
+  const x=Math.random()*(window.innerWidth-100);
+  const y=Math.random()*(window.innerHeight-50);
+  noBtn.style.left=x+"px";
+  noBtn.style.top=y+"px";
+}
+
+noBtn.addEventListener("mouseover",moveNo);
+
+noBtn.addEventListener("click",()=>{
+  noClicks++;
+  moveNo();
+
+  if(noClicks>=50){
+    noBtn.style.opacity="10";
+    setTimeout(()=>noBtn.style.display="none",800);
+  }
+});
+
+yesBtn.addEventListener("click",()=>{
+  title.innerHTML="He said YES!!! 💘";
+  celebration.style.display="block";
+  yesBtn.style.display="none";
+  noBtn.style.display="none";
+
+  music.play();
+  heartRain();
+  confettiBlast();
+});
+
+function heartRain(){
+  const interval=setInterval(()=>{
+    const heart=document.createElement("div");
+    heart.className="heart";
+    heart.innerHTML="💗";
+    heart.style.left=Math.random()*100+"vw";
+    heart.style.fontSize=(15+Math.random()*20)+"px";
+    document.body.appendChild(heart);
+
+    setTimeout(()=>heart.remove(),4000);
+  },200);
+
+  setTimeout(()=>clearInterval(interval),6000);
+}
+
+function confettiBlast(){
+  for(let i=0;i<120;i++){
+    const c=document.createElement("div");
+    c.className="confetti";
+    c.style.left=Math.random()*100+"vw";
+    c.style.background=`hsl(${Math.random()*360},100%,60%)`;
+    document.body.appendChild(c);
+
+    setTimeout(()=>c.remove(),3000);
+  }
+}
+
+</script>
+
+</body>
+</html>
